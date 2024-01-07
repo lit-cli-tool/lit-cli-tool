@@ -1,0 +1,36 @@
+{
+  "name": "lit-cli-tool",
+  "version": "0.0.1",
+  "description": "Unofficial CLI tool for the Lit library.",
+  "type": "module",
+  "main": "index.js",
+  "bin": {
+    "lit": "./index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/erelsop/lit-cli.git"
+  },
+  "keywords": [
+    "lit",
+    "cli",
+    "web-components",
+    "tool"
+  ],
+  "author": "Ethan Elsop",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/erelsop/lit-cli/issues"
+  },
+  "homepage": "https://github.com/erelsop/lit-cli#readme",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "commander": "^11.1.0",
+    "inquirer": "^9.2.12"
+  }
+}
