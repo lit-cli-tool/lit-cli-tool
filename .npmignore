@@ -1,5 +1,4 @@
 # Source and test files
-src/
 test/
 tests/
 spec/
@@ -48,3 +47,6 @@ Thumbs.db
 dist/
 build/
 out/
+
+# Ignore test project generation
+test-project/
