@@ -26,9 +26,8 @@ This command will scaffold a new Lit project named `my-lit-project`, including c
 
 ## Features
 
-- Scaffold new Lit projects with a single command.
+- Scaffold new Lit projects with a single command. (This is currently limited to the official TypeScript starter template. Further scaffolding choices are the next TODOs.)
 - Optional GitHub repository creation during project setup.
-- Easy integration with GitHub via the GitHub CLI tool.
 
 ## Current TODOs:
 
