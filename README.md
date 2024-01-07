@@ -1,6 +1,6 @@
 # Lit CLI Tool
 
-The Lit CLI Tool is a custom script designed to streamline the process of creating new Lit projects. It automates the setup of Lit project environments, including repository initialization and dependency management, with potential for further customizations and features.
+This Lit CLI Tool is a custom script designed to streamline the process of creating new Lit projects. It automates the setup of Lit project environments, including repository initialization and dependency management, with potential for further customizations and features.
 
 ## Installation
 
