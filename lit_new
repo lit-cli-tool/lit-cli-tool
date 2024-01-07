@@ -3,9 +3,10 @@
 # Function to check if GitHub CLI is installed
 check_gh_installed() {
   if ! command -v gh &>/dev/null; then
-    echo "GitHub CLI (gh) is not installed. Please install it to use this script."
-    exit 1
+    echo "Warning: GitHub CLI (gh) is not installed. Skipping GitHub repository creation."
+    return 1 # Return a non-zero status to indicate "not installed"
   fi
+  return 0 # Return zero status to indicate "installed"
 }
 
 # Function to handle the 'new' command
@@ -50,42 +51,47 @@ create_new_project() {
   read -p "Do you want to create a GitHub repository for this project? (y/n): " create_repo_answer
   case $create_repo_answer in
   [Yy] | [Yy][Ee][Ss])
-    # Get GitHub username using GitHub API
-    local github_username=$(gh api /user --jq .login)
+    # Check if GitHub CLI is installed
+    if check_gh_installed; then
+      # Get GitHub username using GitHub API
+      local github_username=$(gh api /user --jq .login)
 
-    # Ask if the repo should be public or private
-    read -p "Should the repository be public? (y for public, n for private): " repo_visibility
-    local repo_flag=""
-    case $repo_visibility in
-    [Yy] | [Yy][Ee][Ss])
-      repo_flag="--public"
-      ;;
-    [Nn] | [Nn][Oo])
-      repo_flag="--private"
-      ;;
-    *)
-      echo "Invalid input. Aborting repository creation."
-      return 1
-      ;;
-    esac
+      # Ask if the repo should be public or private
+      read -p "Should the repository be public? (y for public, n for private): " repo_visibility
+      local repo_flag=""
+      case $repo_visibility in
+      [Yy] | [Yy][Ee][Ss])
+        repo_flag="--public"
+        ;;
+      [Nn] | [Nn][Oo])
+        repo_flag="--private"
+        ;;
+      *)
+        echo "Invalid input. Aborting repository creation."
+        return 1
+        ;;
+      esac
 
-    # Create GitHub repository without setting it as remote
-    gh repo create $project_name $repo_flag
+      # Create GitHub repository without setting it as remote
+      gh repo create $project_name $repo_flag
 
-    # Check if repo creation was successful
-    if [ $? -ne 0 ]; then
-      echo "Failed to create GitHub repository."
-      return 1
+      # Check if repo creation was successful
+      if [ $? -ne 0 ]; then
+        echo "Failed to create GitHub repository."
+        return 1
+      fi
+
+      # Initialize Git, set the remote, and push files to the remote repository
+      git init
+      git remote add origin https://github.com/$github_username/$project_name.git
+      git add .
+      git commit -m "Initial commit"
+      git branch -M main
+      git push -u origin main
+
+    else
+      echo "Project successfully created without a GitHub repository."
     fi
-
-    # Initialize Git, set the remote, and push files to the remote repository
-    git init
-    git remote add origin https://github.com/$github_username/$project_name.git
-    git add .
-    git commit -m "Initial commit"
-    git branch -M main
-    git push -u origin main
-
     ;;
   [Nn] | [Nn][Oo])
     echo "Skipping GitHub repository creation."
@@ -97,9 +103,6 @@ create_new_project() {
 
   echo "Project setup completed successfully."
 }
-
-# Check if GitHub CLI is installed
-check_gh_installed
 
 # Main command handling
 case "$1" in
