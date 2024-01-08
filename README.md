@@ -7,21 +7,11 @@ This Lit CLI Tool is a Node.js-based command line interface designed to streamli
 ## Installation
 
 To install the Lit CLI Tool, use npm with the following command:
-
-```bash
-npm install -g lit-cli-tool
-```
-
 This will install the tool globally on your system, making the `lit` command available in your terminal.
 
 ## How to Use
 
 To create a new Lit project, use the `lit` command followed by `new` and your desired project name. For example:
-
-```bash
-lit new my-lit-project
-```
-
 This command will scaffold a new Lit project named `my-lit-project`, including cloning a starter template, installing dependencies, and optionally creating a GitHub repository if the GitHub CLI tool is installed and configured on your system.
 
 ## Features
@@ -30,8 +20,6 @@ This command will scaffold a new Lit project named `my-lit-project`, including c
 - Optional GitHub repository creation during project setup.
 
 ## Current TODOs:
-
-- [ ] Implement TypeScript / JavaScript toggling to allow users to choose between project types.
 - [ ] Outline and implement custom project scaffolding options.
 - [ ] Enable toggling between official starter templates and custom scaffolds.
 - [ ] Add a command to create individual Lit components within a project.
@@ -52,3 +40,6 @@ This command will scaffold a new Lit project named `my-lit-project`, including c
 - [ ] **Docker Integration**: Options for containerizing the app with Docker.
 - [ ] **Performance Audits**: Include tools for performance analysis and optimization.
 - [ ] **Documentation Generator**: Auto-generate documentation from the code.
+
+## Completed Tasks:
+- [x] ~~Implement TypeScript / JavaScript toggling to allow users to choose between project types.~~
