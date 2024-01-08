@@ -35,6 +35,7 @@
     "inquirer": "^9.2.12"
   },
   "devDependencies": {
+    "@types/commander": "^2.12.2",
     "@types/inquirer": "^9.0.7",
     "@types/node": "^20.10.7",
     "typescript": "^5.3.3"
