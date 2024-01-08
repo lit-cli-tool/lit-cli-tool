@@ -1,8 +1,8 @@
-import { execSync } from 'child_process';
+import {execSync} from 'child_process';
 
-function checkGhInstalled() {
+function checkGhInstalled(): boolean {
   try {
-    execSync('command -v gh', { stdio: 'ignore' });
+    execSync('command -v gh', {stdio: 'ignore'});
     return true;
   } catch {
     console.warn(
@@ -12,4 +12,4 @@ function checkGhInstalled() {
   }
 }
 
-export { checkGhInstalled };
+export {checkGhInstalled};

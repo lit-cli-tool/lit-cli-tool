@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { program } from 'commander';
-import { createNewProject } from './src/create_new_project.js';
+import { createNewProject } from './create_new_project';
 
 program
   .command('new <project-name>')
