@@ -89,7 +89,7 @@ async function createNewProject(): Promise<void> {
   let githubRepo: string;
   const shortLanguage: string = (language === 'TypeScript') ? 'ts' : 'js';
   if (template === 'Skeleton') {
-    githubRepo = `https://github.com/erelsop/lit-cli-skeleton-${shortLanguage}.git`;
+    githubRepo = `https://github.com/lit-cli-tool/lit-cli-skeleton-${shortLanguage}.git`;
   } else {
     githubRepo = `https://github.com/lit/lit-element-starter-${shortLanguage}.git`;
   }

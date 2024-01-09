@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/erelsop/lit-cli-tool.git"
+    "url": "https://github.com/lit-cli-tool/lit-cli-tool.git"
   },
   "keywords": [
     "lit",
@@ -24,9 +24,9 @@
   "author": "Ethan Elsop",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/erelsop/lit-cli-tool/issues"
+    "url": "https://github.com/lit-cli-tool/lit-cli-tool/issues"
   },
-  "homepage": "https://github.com/erelsop/lit-cli-tool#readme",
+  "homepage": "https://github.com/lit-cli-tool/lit-cli-tool#readme",
   "engines": {
     "node": ">=18.0.0"
   },
