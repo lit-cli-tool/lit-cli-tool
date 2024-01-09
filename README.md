@@ -7,6 +7,11 @@ This Lit CLI Tool is a Node.js-based command line interface designed to streamli
 ## Installation
 
 To install the Lit CLI Tool, use npm with the following command:
+
+```shell
+npm i -g lit-cli-tool
+```
+
 This will install the tool globally on your system, making the `lit` command available in your terminal.
 
 ## How to Use
