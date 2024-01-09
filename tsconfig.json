@@ -11,6 +11,6 @@
     "forceConsistentCasingInFileNames": true,
   },
   "exclude": [
-    "src/templates"
+    "templates/skeleton"
   ]
 }

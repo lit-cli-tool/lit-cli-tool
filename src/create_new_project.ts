@@ -1,9 +1,6 @@
 import {execSync} from 'child_process';
 import inquirer from 'inquirer';
 import {checkGhInstalled} from './utilities.js';
-import {promises as fs} from 'fs';
-import * as path from 'path';
-import {fileURLToPath} from 'url';
 
 type Template = 'Official Starter' | 'Skeleton';
 type Language = 'TypeScript' | 'JavaScript';
@@ -19,7 +16,6 @@ interface InquirerLanguageRepoResponse {
 }
 
 async function createNewProject(projectName: string): Promise<void> {
-  // Ensure the project name is valid
   if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(projectName)) {
     console.error('Invalid project name format. Should be hyphenated lowercase.');
     return;
@@ -37,14 +33,47 @@ async function createNewProject(projectName: string): Promise<void> {
     }
   ]);
   
-  const {language, createRepo, repoPublic}: InquirerLanguageRepoResponse = await inquirer.prompt([
-    {
-      type: 'list',
-      name: 'language',
-      message: 'Which language would you like to use?',
-      choices: ['TypeScript', 'JavaScript'],
-      default: 'TypeScript'
-    },
+  let language: Language = 'TypeScript';
+  if (template === 'Skeleton') {
+    const {language: chosenLanguage} = await inquirer.prompt([
+      {
+        type: 'list',
+        name: 'language',
+        message: 'Which language would you like to use?',
+        choices: ['TypeScript', 'JavaScript'],
+        default: 'TypeScript'
+      }
+    ]);
+    language = chosenLanguage;
+    
+    if (language === 'TypeScript') {
+      const {confirmation} = await inquirer.prompt([
+        {
+          type: 'confirm',
+          name: 'confirmation',
+          message: 'The TypeScript Skeleton project is under development and not currently intended to be used. Are you sure you want to use it?',
+          default: false
+        }
+      ]);
+      if (!confirmation) {
+        const {jsConfirm} = await inquirer.prompt([
+          {
+            type: 'confirm',
+            name: 'jsConfirm',
+            message: 'Would you like to use the JavaScript skeleton instead?',
+            default: true
+          }
+        ]);
+        if (jsConfirm) {
+          language = 'JavaScript';
+        } else {
+          return;
+        }
+      }
+    }
+  }
+  
+  const {createRepo, repoPublic}: InquirerLanguageRepoResponse = await inquirer.prompt([
     {
       type: 'confirm',
       name: 'createRepo',
@@ -61,16 +90,13 @@ async function createNewProject(projectName: string): Promise<void> {
   ]);
   
   let githubRepo: string;
+  const shortLanguage: string = (language === 'TypeScript') ? 'ts' : 'js';
   if (template === 'Skeleton') {
-    const currentPath = fileURLToPath(new URL(import.meta.url));
-    const srcDirectory = path.resolve(path.dirname(currentPath), '../templates/skeleton', language.toLowerCase());
-    const targetDirectory = path.resolve(process.cwd(), projectName);
-    await fs.mkdir(targetDirectory, {recursive: true});
-    await fs.copyFile(srcDirectory, targetDirectory);
+    githubRepo = `https://github.com/erelsop/lit-cli-skeleton-${shortLanguage}.git`;
   } else {
-    githubRepo = `https://github.com/lit/lit-element-starter-${language.toLowerCase()}.git`;
-    execSync(`git clone ${githubRepo} ${projectName}`, {stdio: 'inherit'});
+    githubRepo = `https://github.com/lit/lit-element-starter-${shortLanguage}.git`;
   }
+  execSync(`git clone ${githubRepo} ${projectName}`, {stdio: 'inherit'});
   
   process.chdir(projectName);
   execSync('npm install', {stdio: 'inherit'});
@@ -82,6 +108,7 @@ async function createNewProject(projectName: string): Promise<void> {
   const repoVisibility: string = repoPublic ? '--public' : '--private';
   
   execSync('git init', {stdio: 'inherit'});
+  execSync('git remote remove origin');
   execSync(`gh repo create ${projectName} ${repoVisibility} --confirm --source=.`, {stdio: 'inherit'});
   execSync('git add .', {stdio: 'inherit'});
   execSync('git commit -m "Initial commit"', {stdio: 'inherit'});

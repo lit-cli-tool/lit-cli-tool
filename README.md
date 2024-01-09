@@ -12,7 +12,12 @@ This will install the tool globally on your system, making the `lit` command ava
 ## How to Use
 
 To create a new Lit project, use the `lit` command followed by `new` and your desired project name. For example:
-This command will scaffold a new Lit project named `my-lit-project`, including cloning a starter template, installing dependencies, and optionally creating a GitHub repository if the GitHub CLI tool is installed and configured on your system.
+This command will scaffold a new Lit project named `my-lit-project`, including cloning a starter template, 
+installing dependencies, and optionally creating a GitHub repository if the GitHub CLI tool is installed and configured on your system:
+
+```bash
+lit new my-lit-project
+```
 
 ## Features
 
