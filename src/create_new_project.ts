@@ -1,6 +1,6 @@
 import {execSync} from 'child_process';
 import inquirer from 'inquirer';
-import {checkGhInstalled} from './utilities.js';
+import {checkGhInstalled, getProjectName} from './utilities.js';
 
 type Template = 'Official Starter' | 'Skeleton';
 type Language = 'TypeScript' | 'JavaScript';
@@ -15,11 +15,8 @@ interface InquirerLanguageRepoResponse {
   repoPublic: boolean;
 }
 
-async function createNewProject(projectName: string): Promise<void> {
-  if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(projectName)) {
-    console.error('Invalid project name format. Should be hyphenated lowercase.');
-    return;
-  }
+async function createNewProject(): Promise<void> {
+  const projectName: string = await getProjectName();
   
   console.log(`Creating project: ${projectName}`);
   

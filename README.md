@@ -2,7 +2,9 @@
 
 **This tool is currently in development and is not recommended for any production or serious projects! :)**
 
-This Lit CLI Tool is a Node.js-based command line interface designed to streamline the process of creating new Lit projects. It automates the setup of Lit project environments, including repository initialization and dependency management, with the potential for further customizations and features.
+This Lit CLI Tool is a Node.js-based command line interface designed to streamline the process of creating new Lit
+projects. It automates the setup of Lit project environments, including repository initialization and dependency
+management, with the potential for further customizations and features.
 
 ## Installation
 
@@ -16,21 +18,27 @@ This will install the tool globally on your system, making the `lit` command ava
 
 ## How to Use
 
-To create a new Lit project, use the `lit` command followed by `new` and your desired project name. For example:
-This command will scaffold a new Lit project named `my-lit-project`, including cloning a starter template, 
-installing dependencies, and optionally creating a GitHub repository if the GitHub CLI tool is installed and configured on your system:
+To create a new Lit project, use the `lit` command followed by `new`, like so:
 
 ```bash
-lit new my-lit-project
+lit new
 ```
+
+This command will start an interactive session where you can scaffold a new Lit project, including choosing a project
+name, cloning a starter template, selecting language, choosing whether to initialize a GitHub repository, and installing
+dependencies. The session will also ask you if the GitHub repository should be public.
+
+Optional GitHub repository creation can take place during the project setup if the GitHub CLI tool is installed and
+configured on your system.
 
 ## Features
 
-- Scaffold new Lit projects with a single command. (This is currently limited to the official TypeScript starter template. Further scaffolding choices are the next TODOs.)
-- Optional GitHub repository creation during project setup.
+- Scaffold new Lit projects interactively with `lit new` command.
+- Optional GitHub repository creation during the new project setup.
 
 ## Current TODOs:
-- [ ] Outline and implement custom project scaffolding options.
+
+- [ ] Outline and implement custom project scaffolding options. (**In progress**)
 - [ ] Enable toggling between official starter templates and custom scaffolds.
 - [ ] Add a command to create individual Lit components within a project.
 
@@ -52,4 +60,7 @@ lit new my-lit-project
 - [ ] **Documentation Generator**: Auto-generate documentation from the code.
 
 ## Completed Tasks:
+
 - [x] ~~Implement TypeScript / JavaScript toggling to allow users to choose between project types.~~
+- [x] ~~Add ability to optionally create a GitHub repository during project setup.~~
+- [x] ~~Add interactive prompts for project naming, template, language, and GitHub repository setup.~~
