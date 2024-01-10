@@ -42,32 +42,6 @@ async function createNewProject(): Promise<void> {
       }
     ]);
     language = chosenLanguage;
-    
-    if (language === 'TypeScript') {
-      const {confirmation} = await inquirer.prompt([
-        {
-          type: 'confirm',
-          name: 'confirmation',
-          message: 'The TypeScript Skeleton project is under development and not currently intended to be used. Are you sure you want to use it?',
-          default: false
-        }
-      ]);
-      if (!confirmation) {
-        const {jsConfirm} = await inquirer.prompt([
-          {
-            type: 'confirm',
-            name: 'jsConfirm',
-            message: 'Would you like to use the JavaScript skeleton instead?',
-            default: true
-          }
-        ]);
-        if (jsConfirm) {
-          language = 'JavaScript';
-        } else {
-          return;
-        }
-      }
-    }
   }
   
   const {createRepo, repoPublic}: InquirerLanguageRepoResponse = await inquirer.prompt([
