@@ -1,6 +1,9 @@
 import {execSync} from 'child_process';
 import inquirer from 'inquirer';
-import {checkGhInstalled, getProjectName} from './utilities.js';
+import chalk from 'chalk';
+import boxen from 'boxen';
+import fs from 'fs';
+import {checkGhInstalled, getProjectName, generateSetupMessage} from './utilities.js';
 
 type Template = 'Official Starter' | 'Skeleton';
 type Language = 'TypeScript' | 'JavaScript';
@@ -18,43 +21,43 @@ interface InquirerLanguageRepoResponse {
 async function createNewProject(): Promise<void> {
   const projectName: string = await getProjectName();
   
-  console.log(`Creating project: ${projectName}`);
+  console.log(chalk.green(`Creating project: ${projectName}`));
   
   const {template}: InquirerTemplateResponse = await inquirer.prompt([
     {
       type: 'list',
       name: 'template',
-      message: 'Which template would you like to use?',
+      message: boxen(chalk.cyan('Which template would you like to use?'), {padding: 1, borderStyle: 'round'}),
       choices: ['Official Starter', 'Skeleton'],
       default: 'Skeleton'
     }
   ]);
   
   let language: Language = 'TypeScript';
-  if (template === 'Skeleton') {
-    const {language: chosenLanguage} = await inquirer.prompt([
-      {
-        type: 'list',
-        name: 'language',
-        message: 'Which language would you like to use?',
-        choices: ['TypeScript', 'JavaScript'],
-        default: 'TypeScript'
-      }
-    ]);
-    language = chosenLanguage;
-  }
-  
+  const {language: chosenLanguage} = await inquirer.prompt([
+    {
+      type: 'list',
+      name: 'language',
+      message: chalk.cyan('Which language would you like to use?'),
+      choices: ['TypeScript', 'JavaScript'],
+      default: 'TypeScript'
+    }
+  ]);
+  language = chosenLanguage;
   const {createRepo, repoPublic}: InquirerLanguageRepoResponse = await inquirer.prompt([
     {
       type: 'confirm',
       name: 'createRepo',
-      message: 'Do you want to create a GitHub repository for this project?',
+      message: boxen(chalk.cyan('Do you want to create a GitHub repository for this project?'), {
+        padding: 1,
+        borderStyle: 'round'
+      }),
       default: false
     },
     {
       type: 'confirm',
       name: 'repoPublic',
-      message: 'Should the repository be public?',
+      message: boxen(chalk.cyan('Should the repository be public?'), {padding: 1, borderStyle: 'round'}),
       default: true,
       when: (answers: InquirerLanguageRepoResponse) => answers.createRepo
     }
@@ -67,26 +70,48 @@ async function createNewProject(): Promise<void> {
   } else {
     githubRepo = `https://github.com/lit/lit-element-starter-${shortLanguage}.git`;
   }
-  execSync(`git clone ${githubRepo} ${projectName}`, {stdio: 'inherit'});
   
+  fs.mkdirSync(projectName);
   process.chdir(projectName);
+  
+  if (!checkGhInstalled()) {
+    execSync(`git clone ${githubRepo} .`, {stdio: 'inherit'});
+    execSync('npm install', {stdio: 'inherit'});
+    
+    console.log(generateSetupMessage(projectName, template));
+    return;
+  }
+  
+  if (!createRepo) {
+    execSync(`git clone ${githubRepo} .`, {stdio: 'inherit'});
+    execSync('npm install', {stdio: 'inherit'});
+    
+    console.log(generateSetupMessage(projectName, template));
+    return;
+  }
+  
+  execSync(`git clone ${githubRepo} .`, {stdio: 'inherit'});
+  execSync('rm -rf .git');
   execSync('npm install', {stdio: 'inherit'});
   
-  if (!checkGhInstalled()) return;
-  
-  if (!createRepo) return;
+  execSync('git init', {stdio: 'inherit'});
   
   const repoVisibility: string = repoPublic ? '--public' : '--private';
+  execSync(`gh repo create ${projectName} ${repoVisibility} --confirm`, {stdio: 'inherit'});
   
-  execSync('git init', {stdio: 'inherit'});
-  execSync('git remote remove origin');
-  execSync(`gh repo create ${projectName} ${repoVisibility} --confirm --source=.`, {stdio: 'inherit'});
+  const ghStatus: string = execSync('gh auth status', {encoding: 'utf8'});
+  let ghUsername = '';
+  const ghStatusMatched: RegExpMatchArray | null = ghStatus.match(/Logged in to github\.com account (.+?) /);
+  if (ghStatusMatched && ghStatusMatched[1]) {
+    ghUsername = ghStatusMatched[1];
+  }
+  
+  execSync(`git remote add origin https://github.com/${ghUsername}/${projectName}.git`, {stdio: 'inherit'});
   execSync('git add .', {stdio: 'inherit'});
   execSync('git commit -m "Initial commit"', {stdio: 'inherit'});
-  execSync('git branch -M main', {stdio: 'inherit'});
-  execSync('git push -u origin main', {stdio: 'inherit'});
+  execSync('git push -u origin HEAD', {stdio: 'inherit'});
   
-  console.log('Project setup completed successfully.');
+  console.log(generateSetupMessage(projectName, template, ghUsername));
 }
 
 export {createNewProject};
