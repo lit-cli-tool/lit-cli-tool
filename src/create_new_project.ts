@@ -33,7 +33,7 @@ async function createNewProject(): Promise<void> {
     }
   ]);
   
-  let language: Language = 'TypeScript';
+  let language: Language;
   const {language: chosenLanguage} = await inquirer.prompt([
     {
       type: 'list',
@@ -82,19 +82,15 @@ async function createNewProject(): Promise<void> {
     return;
   }
   
-  if (!createRepo) {
-    execSync(`git clone ${githubRepo} .`, {stdio: 'inherit'});
-    execSync('npm install', {stdio: 'inherit'});
-    
-    console.log(generateSetupMessage(projectName, template));
-    return;
-  }
-  
   execSync(`git clone ${githubRepo} .`, {stdio: 'inherit'});
   execSync('rm -rf .git');
   execSync('npm install', {stdio: 'inherit'});
-  
   execSync('git init', {stdio: 'inherit'});
+  
+  if (!createRepo) {
+    console.log(generateSetupMessage(projectName, template));
+    return;
+  }
   
   const repoVisibility: string = repoPublic ? '--public' : '--private';
   execSync(`gh repo create ${projectName} ${repoVisibility} --confirm`, {stdio: 'inherit'});

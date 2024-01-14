@@ -39,7 +39,6 @@ configured on your system.
 ## Current TODOs:
 
 - [ ] Outline and implement custom project scaffolding options. (**In progress**)
-- [ ] Enable toggling between official starter templates and custom scaffolds.
 - [ ] Add a command to create individual Lit components within a project.
 
 ## Future Development Ideas
@@ -54,7 +53,6 @@ configured on your system.
 - [ ] **Build and Deployment Automation**: Automate build processes and deployment to various platforms.
 - [ ] **Customizable Project Templates**: Allow users to create and use their own project templates.
 - [ ] **Plugin System**: Implement a system for extending the CLI tool with additional features.
-- [ ] **Interactive Mode**: Provide an interactive setup mode with prompts and options.
 - [ ] **Docker Integration**: Options for containerizing the app with Docker.
 - [ ] **Performance Audits**: Include tools for performance analysis and optimization.
 - [ ] **Documentation Generator**: Auto-generate documentation from the code.
@@ -64,3 +62,4 @@ configured on your system.
 - [x] ~~Implement TypeScript / JavaScript toggling to allow users to choose between project types.~~
 - [x] ~~Add ability to optionally create a GitHub repository during project setup.~~
 - [x] ~~Add interactive prompts for project naming, template, language, and GitHub repository setup.~~
+- [x] ~~Enable toggling between official starter templates and custom scaffolds.~~
